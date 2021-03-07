@@ -130,7 +130,7 @@ server {
 }
 
 $ sudo docker run -itd -p 8080:80 --rm -v nginx_conf2:/etc/nginx/conf.d --name="nginx" nginx:latest
-
+```
 
 # 5. VM#2 (mongodb and run Employee Application)
 ```
