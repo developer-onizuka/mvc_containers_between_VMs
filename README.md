@@ -38,7 +38,7 @@ $ sudo reboot
 See also https://qiita.com/tukiyo3/items/94eda73b951d23b214c3
 ```
 $ cat iptables.sh 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5001
 GUEST_PORT=5001
@@ -46,7 +46,7 @@ GUEST_PORT=5001
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5011
 GUEST_PORT=5011
@@ -54,7 +54,7 @@ GUEST_PORT=5011
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5021
 GUEST_PORT=5021
@@ -62,7 +62,7 @@ GUEST_PORT=5021
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5031
 GUEST_PORT=5031
@@ -70,7 +70,7 @@ GUEST_PORT=5031
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5041
 GUEST_PORT=5041
@@ -78,7 +78,7 @@ GUEST_PORT=5041
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5051
 GUEST_PORT=5051
@@ -86,7 +86,7 @@ GUEST_PORT=5051
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5061
 GUEST_PORT=5061
@@ -94,7 +94,7 @@ GUEST_PORT=5061
 sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
 sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
-PUBLIC_IP=192.168.0.2
+PUBLIC_IP=192.168.0.1
 LXC_IP=172.17.0.1
 HOST_PORT=5071
 GUEST_PORT=5071
