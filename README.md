@@ -108,6 +108,17 @@ sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
 $ sudo docker volume create nginx_conf2
 $ sudo docker inspect nginx_conf2
+[
+    {
+        "CreatedAt": "2021-03-08T07:31:19Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/snap/docker/common/var-lib-docker/volumes/nginx_conf2/_data",
+        "Name": "nginx_conf2",
+        "Options": {},
+        "Scope": "local"
+    }
+]
 $ sudo cat /var/snap/docker/common/var-lib-docker/volumes/nginx_conf2/_data/default.conf
 upstream proxy.com {
 	server 192.168.0.2:5001;
