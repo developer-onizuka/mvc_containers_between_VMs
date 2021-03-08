@@ -36,6 +36,7 @@ $ sudo reboot
 
 # 3. Port Forwarding 
 See also https://qiita.com/tukiyo3/items/94eda73b951d23b214c3
+But this step might not be necessary. Please check the result of iptables so that you can find the port forwarding.
 ```
 $ cat iptables.sh 
 PUBLIC_IP=192.168.0.1
