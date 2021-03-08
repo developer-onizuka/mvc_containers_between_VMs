@@ -106,7 +106,7 @@ sudo iptables -t nat -A POSTROUTING -j MASQUERADE
 
 # 4. VM#1 (nginx config file)
 ```
-$ sudo docker create nginx_conf2
+$ sudo docker volume create nginx_conf2
 $ sudo docker inspect nginx_conf2
 $ sudo cat /var/snap/docker/common/var-lib-docker/volumes/nginx_conf2/_data/default.conf
 upstream proxy.com {
