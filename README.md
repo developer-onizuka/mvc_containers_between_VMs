@@ -148,6 +148,7 @@ $ sudo docker run -itd -p 8080:80 --rm -v nginx_conf2:/etc/nginx/conf.d --name="
 # 5. VM#2 (mongodb and run Employee Application)
 ```
 sudo docker run -itd -p 27017:27017 --rm --name="mongodb" mongo:latest
+(or sudo docker run -itd -p 27017:27017 --rm --name="mongodb" -v sample_mongo:/data/db mongo:latest)
 sudo docker run -itd -p 5001:5001 -p 5000:5000 --name="emp0" --rm employee:latest /usr/local/dotnet/publish/Employee
 sudo docker run -itd -p 5011:5001 -p 5010:5000 --name="emp1" --rm employee:latest /usr/local/dotnet/publish/Employee
 sudo docker run -itd -p 5021:5001 -p 5020:5000 --name="emp2" --rm employee:latest /usr/local/dotnet/publish/Employee
