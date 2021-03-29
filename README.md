@@ -3,7 +3,7 @@
 | function | VM | ipaddress | internal | container's port |
 | --- | --- | --- | --- | --- |
 | nginx | VM#1 | 192.168.0.1:8080 | 172.17.0.1:8080 | 80 | 
-| mongo | VM#2 | 192.168.0.2:27017 | 172.17.0.1:27017 | 27017 | 
+| mongo | VM#2 | 192.168.0.1:27017 | 172.17.0.1:27017 | 27017 | 
 | emp0 | VM#2 | 192.168.0.2:5001 | 172.17.0.1:5001 | 5001 |
 | emp1 | VM#2 | 192.168.0.2:5011 | 172.17.0.1:5011 | 5001 |
 | emp2 | VM#2 | 192.168.0.2:5021 | 172.17.0.1:5021 | 5001 |
@@ -36,76 +36,9 @@ $ sudo reboot
 
 # 3. Port Forwarding 
 See also https://qiita.com/tukiyo3/items/94eda73b951d23b214c3.
-
 But this step might not be necessary. Please check the result of iptables so that you can find the port forwarding.
-```
-$ cat iptables.sh 
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5001
-GUEST_PORT=5001
 
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5011
-GUEST_PORT=5011
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5021
-GUEST_PORT=5021
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5031
-GUEST_PORT=5031
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5041
-GUEST_PORT=5041
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5051
-GUEST_PORT=5051
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5061
-GUEST_PORT=5061
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-
-PUBLIC_IP=192.168.0.1
-LXC_IP=172.17.0.1
-HOST_PORT=5071
-GUEST_PORT=5071
-
-sudo iptables -t nat -A PREROUTING -p tcp -d $PUBLIC_IP --dport $HOST_PORT -j DNAT --to-destination ${LXC_IP}:${GUEST_PORT}
-sudo iptables -t nat -A POSTROUTING -j MASQUERADE
-```
-
-# 4. VM#1 (nginx config file)
+# 4. VM#1@192.168.0.1 (nginx config file and run mongodb)
 ```
 $ sudo docker volume create nginx_conf2
 $ sudo docker inspect nginx_conf2
@@ -143,18 +76,18 @@ server {
 }
 
 $ sudo docker run -itd -p 8080:80 --rm -v nginx_conf2:/etc/nginx/conf.d --name="nginx" nginx:latest
+$ sudo docker run -itd -p 27017:27017 --rm --name="mongodb" mongo:latest
+(or sudo docker run -itd -p 27017:27017 --rm --name="mongodb" -v sample_mongo:/data/db mongo:latest)
 ```
 
-# 5. VM#2 (mongodb and run Employee Application)
+# 5. VM#2@192.168.0.2 (run Employee Application)
 ```
-sudo docker run -itd -p 27017:27017 --rm --name="mongodb" mongo:latest
-(or sudo docker run -itd -p 27017:27017 --rm --name="mongodb" -v sample_mongo:/data/db mongo:latest)
-sudo docker run -itd -p 5001:5001 -p 5000:5000 --env MONGO="172.17.0.1" --name="emp0" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5011:5001 -p 5010:5000 --env MONGO="172.17.0.1" --name="emp1" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5021:5001 -p 5020:5000 --env MONGO="172.17.0.1" --name="emp2" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5031:5001 -p 5030:5000 --env MONGO="172.17.0.1" --name="emp3" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5041:5001 -p 5040:5000 --env MONGO="172.17.0.1" --name="emp4" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5051:5001 -p 5050:5000 --env MONGO="172.17.0.1" --name="emp5" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5061:5001 -p 5060:5000 --env MONGO="172.17.0.1" --name="emp6" --rm employee:latest /usr/local/dotnet/publish/Employee
-sudo docker run -itd -p 5071:5001 -p 5070:5000 --env MONGO="172.17.0.1" --name="emp7" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5001:5001 -p 5000:5000 --env MONGO="192.168.0.1" --name="emp0" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5011:5001 -p 5010:5000 --env MONGO="192.168.0.1" --name="emp1" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5021:5001 -p 5020:5000 --env MONGO="192.168.0.1" --name="emp2" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5031:5001 -p 5030:5000 --env MONGO="192.168.0.1" --name="emp3" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5041:5001 -p 5040:5000 --env MONGO="192.168.0.1" --name="emp4" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5051:5001 -p 5050:5000 --env MONGO="192.168.0.1" --name="emp5" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5061:5001 -p 5060:5000 --env MONGO="192.168.0.1" --name="emp6" --rm employee:latest /usr/local/dotnet/publish/Employee
+sudo docker run -itd -p 5071:5001 -p 5070:5000 --env MONGO="192.168.0.1" --name="emp7" --rm employee:latest /usr/local/dotnet/publish/Employee
 ```
